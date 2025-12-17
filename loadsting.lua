@@ -3804,3 +3804,157 @@ SoundsTab:CreateSlider({
         end)
     end
 })
+
+-- ============================================
+-- PASTE THIS AFTER LINE 1727 OF YOUR SCRIPT
+-- PART 1: TABS 28-33
+-- ============================================
+
+-- TAB 28: PHYSICS
+local PhysicsTab = Window:CreateTab("⚙️ Physics", nil)
+PhysicsTab:CreateSection("Physics Manipulation")
+
+PhysicsTab:CreateSlider({Name = "🎯 Part Density", Range = {0, 10}, Increment = 0.5, CurrentValue = 1, Callback = function(val) pcall(function() local char = getChar() if char then for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then part.CustomPhysicalProperties = PhysicalProperties.new(val, 0.3, 0.5) end end end end) end})
+
+PhysicsTab:CreateToggle({Name = "🎈 Helium Mode", CurrentValue = false, Callback = function(val) pcall(function() local char = getChar() if char then for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then if val then local bv = Instance.new("BodyVelocity") bv.Velocity = Vector3.new(0, 5, 0) bv.MaxForce = Vector3.new(0, math.huge, 0) bv.Parent = part else for _, v in pairs(part:GetChildren()) do if v:IsA("BodyVelocity") then v:Destroy() end end end end end Rayfield:Notify({Title = val and "Helium ON" or "Helium OFF", Content = val and "Floating away!" or "Back to normal", Duration = 2}) end end) end})
+
+PhysicsTab:CreateButton({Name = "🌀 Anti-Gravity Jump", Callback = function() pcall(function() local root = getRoot() if root then root.Velocity = Vector3.new(0, 300, 0) workspace.Gravity = 10 wait(3) workspace.Gravity = 196 Rayfield:Notify({Title = "Super Jump!", Content = "To the stars!", Duration = 2}) end end) end})
+
+PhysicsTab:CreateButton({Name = "💥 Shockwave", Callback = function() pcall(function() local root = getRoot() if root then for _, obj in pairs(workspace:GetDescendants()) do if obj:IsA("BasePart") and not obj:IsDescendantOf(getChar()) then local distance = (obj.Position - root.Position).Magnitude if distance < 50 then local bv = Instance.new("BodyVelocity") bv.Velocity = (obj.Position - root.Position).Unit * 100 bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge) bv.Parent = obj game:GetService("Debris"):AddItem(bv, 0.5) end end end Rayfield:Notify({Title = "Shockwave!", Content = "Everything pushed away!", Duration = 2}) end end) end})
+
+-- TAB 29: COMBAT PRO
+local CombatAdvTab = Window:CreateTab("🗡️ Combat Pro", nil)
+CombatAdvTab:CreateSection("Advanced Combat")
+
+CombatAdvTab:CreateSlider({Name = "⚔️ Attack Range", Range = {1, 10}, Increment = 1, CurrentValue = 1, Callback = function(val) _G.AttackRange = val end})
+
+CombatAdvTab:CreateButton({Name = "💫 Dash Attack", Callback = function() pcall(function() local root = getRoot() if root then for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then root.CFrame = CFrame.new(plr.Character.HumanoidRootPart.Position) break end end end end) end})
+
+CombatAdvTab:CreateButton({Name = "⚡ Chain Attack", Callback = function() pcall(function() local root = getRoot() if root then for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then local dist = (plr.Character.HumanoidRootPart.Position - root.Position).Magnitude if dist < 30 then local beam = Instance.new("Part") beam.Size = Vector3.new(0.5, 0.5, dist) beam.Material = Enum.Material.Neon beam.BrickColor = BrickColor.new("Electric blue") beam.Anchored = true beam.CanCollide = false beam.CFrame = CFrame.new(root.Position, plr.Character.HumanoidRootPart.Position) * CFrame.new(0, 0, -dist/2) beam.Parent = workspace game:GetService("Debris"):AddItem(beam, 0.5) end end end end end) end})
+
+-- TAB 30: BUILDING
+local BuildingTab = Window:CreateTab("🏗️ Building", nil)
+BuildingTab:CreateSection("Building Tools")
+
+BuildingTab:CreateButton({Name = "🏰 Build Platform", Callback = function() pcall(function() local root = getRoot() if root then for x = -3, 3 do for z = -3, 3 do local part = Instance.new("Part") part.Size = Vector3.new(5, 1, 5) part.Position = root.Position + Vector3.new(x * 5, -5, z * 5) part.BrickColor = BrickColor.new("Dark stone grey") part.Anchored = true part.Parent = workspace end end Rayfield:Notify({Title = "Platform Built", Duration = 2}) end end) end})
+
+BuildingTab:CreateButton({Name = "🏠 Build House", Callback = function() pcall(function() local root = getRoot() if root then local pos = root.Position + Vector3.new(10, 0, 0) local floor = Instance.new("Part") floor.Size = Vector3.new(20, 1, 20) floor.Position = pos floor.Anchored = true floor.Parent = workspace for i = 1, 4 do local wall = Instance.new("Part") wall.Size = Vector3.new(20, 10, 1) wall.Anchored = true if i == 1 then wall.Position = pos + Vector3.new(0, 5, -10) elseif i == 2 then wall.Position = pos + Vector3.new(0, 5, 10) elseif i == 3 then wall.Size = Vector3.new(1, 10, 20) wall.Position = pos + Vector3.new(-10, 5, 0) else wall.Size = Vector3.new(1, 10, 20) wall.Position = pos + Vector3.new(10, 5, 0) end wall.Parent = workspace end Rayfield:Notify({Title = "House Built", Duration = 2}) end end) end})
+
+-- TAB 31: VEHICLES
+local VehicleTab = Window:CreateTab("🚗 Vehicles", nil)
+VehicleTab:CreateSection("Vehicle Spawns")
+
+VehicleTab:CreateButton({Name = "🏎️ Spawn Car", Callback = function() pcall(function() local root = getRoot() if root then local car = Instance.new("Model") car.Name = "Car" local chassis = Instance.new("Part") chassis.Size = Vector3.new(6, 2, 12) chassis.Position = root.Position + Vector3.new(0, 5, 0) chassis.Parent = car local seat = Instance.new("VehicleSeat") seat.Size = Vector3.new(2, 1, 2) seat.Position = chassis.Position seat.Parent = car car.Parent = workspace Rayfield:Notify({Title = "Car Spawned", Duration = 2}) end end) end})
+
+VehicleTab:CreateButton({Name = "🚁 Spawn Helicopter", Callback = function() pcall(function() local root = getRoot() if root then local heli = Instance.new("Model") local body = Instance.new("Part") body.Size = Vector3.new(8, 3, 12) body.Position = root.Position + Vector3.new(0, 10, 0) body.Parent = heli local seat = Instance.new("VehicleSeat") seat.Position = body.Position seat.Parent = heli heli.Parent = workspace Rayfield:Notify({Title = "Helicopter Spawned", Duration = 2}) end end) end})
+
+-- TAB 32: TIME CONTROL
+local TimeTab = Window:CreateTab("⏰ Time", nil)
+TimeTab:CreateSection("Time Control")
+
+TimeTab:CreateButton({Name = "⏸️ Freeze Time", Callback = function() pcall(function() for _, obj in pairs(workspace:GetDescendants()) do if obj:IsA("BasePart") and not obj:IsDescendantOf(getChar()) then obj.Anchored = true end end Rayfield:Notify({Title = "Time Frozen", Duration = 2}) end) end})
+
+TimeTab:CreateButton({Name = "▶️ Unfreeze Time", Callback = function() pcall(function() for _, obj in pairs(workspace:GetDescendants()) do if obj:IsA("BasePart") and not obj:IsDescendantOf(getChar()) then obj.Anchored = false end end Rayfield:Notify({Title = "Time Unfrozen", Duration = 2}) end) end})
+
+TimeTab:CreateButton({Name = "🌅 Fast Forward", Callback = function() Lighting.ClockTime = (Lighting.ClockTime + 6) % 24 Rayfield:Notify({Title = "Time Advanced", Duration = 2}) end})
+
+-- TAB 33: MAGIC
+local MagicTab = Window:CreateTab("🔮 Magic", nil)
+MagicTab:CreateSection("Magic Spells")
+
+MagicTab:CreateButton({Name = "⚡ Lightning", Callback = function() pcall(function() local mouse = player:GetMouse() if mouse.Target then local bolt = Instance.new("Part") bolt.Size = Vector3.new(1, 100, 1) bolt.Material = Enum.Material.Neon bolt.Anchored = true bolt.Position = mouse.Hit.Position + Vector3.new(0, 50, 0) bolt.Parent = workspace local exp = Instance.new("Explosion") exp.Position = mouse.Hit.Position exp.Parent = workspace game:GetService("Debris"):AddItem(bolt, 0.5) Rayfield:Notify({Title = "Lightning!", Duration = 2}) end end) end})
+
+MagicTab:CreateButton({Name = "🔥 Fireball", Callback = function() pcall(function() local root = getRoot() if root then local ball = Instance.new("Part") ball.Shape = Enum.PartType.Ball ball.Size = Vector3.new(3, 3, 3) ball.Material = Enum.Material.Neon ball.Position = root.Position + root.CFrame.LookVector * 5 ball.Parent = workspace local bv = Instance.new("BodyVelocity") bv.Velocity = root.CFrame.LookVector * 100 bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge) bv.Parent = ball game:GetService("Debris"):AddItem(ball, 3) Rayfield:Notify({Title = "Fireball!", Duration = 2}) end end) end})
+
+-- ============================================
+-- PASTE THIS AFTER PART 1
+-- PART 2: TABS 34-42
+-- ============================================
+
+-- TAB 34: PETS
+local PetsTab = Window:CreateTab("🐾 Pets", nil)
+PetsTab:CreateSection("Spawn Companions")
+
+PetsTab:CreateButton({Name = "🐕 Spawn Dog", Callback = function() pcall(function() local root = getRoot() if root then local dog = Instance.new("Part") dog.Size = Vector3.new(2, 2, 3) dog.BrickColor = BrickColor.new("Brown") dog.Position = root.Position + Vector3.new(3, 0, 0) dog.Parent = workspace spawn(function() while dog and dog.Parent do local playerRoot = getRoot() if playerRoot then dog.Position = playerRoot.Position + Vector3.new(3, 0, 0) end wait(0.5) end end) Rayfield:Notify({Title = "Dog Spawned!", Duration = 2}) end end) end})
+
+PetsTab:CreateButton({Name = "🐉 Spawn Dragon", Callback = function() pcall(function() local root = getRoot() if root then local dragon = Instance.new("Model") local body = Instance.new("Part") body.Size = Vector3.new(4, 3, 6) body.BrickColor = BrickColor.new("Really red") body.Material = Enum.Material.Neon body.Position = root.Position + Vector3.new(0, 10, 0) body.Parent = dragon dragon.Parent = workspace spawn(function() while dragon and dragon.Parent do local playerRoot = getRoot() if playerRoot then body.Position = playerRoot.Position + Vector3.new(0, 10, -5) end wait(0.1) end end) Rayfield:Notify({Title = "Dragon Summoned!", Duration = 2}) end end) end})
+
+PetsTab:CreateButton({Name = "🗑️ Remove All Pets", Callback = function() for _, obj in pairs(workspace:GetChildren()) do if obj.Name == "Dragon" or (obj:IsA("Part") and obj.Size == Vector3.new(2, 2, 3)) then obj:Destroy() end end end})
+
+-- TAB 35: PORTALS
+local PortalsTab = Window:CreateTab("🌀 Portals", nil)
+_G.Portals = {}
+
+PortalsTab:CreateButton({Name = "🔵 Blue Portal", Callback = function() local mouse = player:GetMouse() if mouse.Target then local portal = Instance.new("Part") portal.Size = Vector3.new(6, 8, 0.5) portal.Material = Enum.Material.Neon portal.BrickColor = BrickColor.new("Bright blue") portal.Anchored = true portal.Position = mouse.Hit.Position portal.Parent = workspace _G.Portals.Blue = portal.Position Rayfield:Notify({Title = "Blue Portal Created", Duration = 2}) end end})
+
+PortalsTab:CreateButton({Name = "🟠 Orange Portal", Callback = function() local mouse = player:GetMouse() if mouse.Target then local portal = Instance.new("Part") portal.Size = Vector3.new(6, 8, 0.5) portal.Material = Enum.Material.Neon portal.BrickColor = BrickColor.new("Deep orange") portal.Anchored = true portal.Position = mouse.Hit.Position portal.Parent = workspace _G.Portals.Orange = portal.Position Rayfield:Notify({Title = "Orange Portal Created", Duration = 2}) end end})
+
+PortalsTab:CreateButton({Name = "🌀 Teleport", Callback = function() if _G.Portals.Blue and _G.Portals.Orange then local root = getRoot() if root then local distBlue = (root.Position - _G.Portals.Blue).Magnitude local distOrange = (root.Position - _G.Portals.Orange).Magnitude if distBlue < distOrange then root.CFrame = CFrame.new(_G.Portals.Orange) else root.CFrame = CFrame.new(_G.Portals.Blue) end end end end})
+
+-- TAB 36: MINI GAMES
+local MinigamesTab = Window:CreateTab("🎮 Mini Games", nil)
+
+MinigamesTab:CreateButton({Name = "🎯 Target Practice", Callback = function() for i = 1, 10 do local target = Instance.new("Part") target.Shape = Enum.PartType.Ball target.Size = Vector3.new(3, 3, 3) target.BrickColor = BrickColor.new("Really red") target.Position = Vector3.new(math.random(-50, 50), math.random(5, 20), math.random(-50, 50)) target.Anchored = true target.Parent = workspace target.Touched:Connect(function(hit) if hit.Parent == getChar() then target:Destroy() Rayfield:Notify({Title = "Hit!", Duration = 1}) end end) game:GetService("Debris"):AddItem(target, 30) end Rayfield:Notify({Title = "Hit all 10 targets!", Duration = 3}) end})
+
+MinigamesTab:CreateButton({Name = "💎 Coin Collector", Callback = function() _G.CoinsCollected = 0 for i = 1, 50 do local coin = Instance.new("Part") coin.Shape = Enum.PartType.Cylinder coin.Size = Vector3.new(0.5, 2, 2) coin.BrickColor = BrickColor.new("Gold") coin.Position = Vector3.new(math.random(-100, 100), math.random(5, 50), math.random(-100, 100)) coin.Anchored = true coin.Parent = workspace coin.Touched:Connect(function(hit) if hit.Parent == getChar() then _G.CoinsCollected = _G.CoinsCollected + 1 coin:Destroy() Rayfield:Notify({Title = "Coin! ".._G.CoinsCollected.."/50", Duration = 1}) end end) end end})
+
+-- TAB 37: DISGUISES
+local DisguiseTab = Window:CreateTab("🎭 Disguises", nil)
+
+DisguiseTab:CreateButton({Name = "👻 Ghost Mode", Callback = function() local char = getChar() if char then for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then part.Transparency = 0.7 part.Material = Enum.Material.ForceField end end Rayfield:Notify({Title = "Ghost Mode!", Duration = 2}) end end})
+
+DisguiseTab:CreateButton({Name = "🤖 Robot Skin", Callback = function() local char = getChar() if char then for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then part.Material = Enum.Material.Metal part.BrickColor = BrickColor.new("Medium stone grey") end end end end})
+
+DisguiseTab:CreateButton({Name = "🔥 Lava Skin", Callback = function() local char = getChar() if char then for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then part.Material = Enum.Material.Neon part.BrickColor = BrickColor.new("Really red") local fire = Instance.new("Fire") fire.Size = 5 fire.Parent = part end end end end})
+
+DisguiseTab:CreateButton({Name = "🌈 Rainbow Skin", Callback = function() local char = getChar() if char then spawn(function() while char and char.Parent do for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1) end end wait(0.1) end end) end end})
+
+-- TAB 38: GRAVITY ZONES
+local GravityTab = Window:CreateTab("🌍 Gravity", nil)
+
+GravityTab:CreateButton({Name = "🚀 Zero Gravity Zone", Callback = function() local root = getRoot() if root then local zone = Instance.new("Part") zone.Size = Vector3.new(30, 30, 30) zone.Position = root.Position zone.Transparency = 0.7 zone.BrickColor = BrickColor.new("Bright blue") zone.Anchored = true zone.CanCollide = false zone.Parent = workspace zone.Touched:Connect(function(hit) if hit.Parent:FindFirstChild("Humanoid") then local bv = Instance.new("BodyVelocity") bv.Velocity = Vector3.new(0, 0, 0) bv.MaxForce = Vector3.new(0, math.huge, 0) bv.Parent = hit game:GetService("Debris"):AddItem(bv, 0.1) end end) game:GetService("Debris"):AddItem(zone, 60) end end})
+
+GravityTab:CreateButton({Name = "⬇️ High Gravity Zone", Callback = function() local root = getRoot() if root then local zone = Instance.new("Part") zone.Size = Vector3.new(30, 30, 30) zone.Position = root.Position zone.Transparency = 0.7 zone.BrickColor = BrickColor.new("Really red") zone.Anchored = true zone.CanCollide = false zone.Parent = workspace zone.Touched:Connect(function(hit) if hit.Parent:FindFirstChild("Humanoid") then local bv = Instance.new("BodyVelocity") bv.Velocity = Vector3.new(0, -100, 0) bv.MaxForce = Vector3.new(0, math.huge, 0) bv.Parent = hit game:GetService("Debris"):AddItem(bv, 0.1) end end) game:GetService("Debris"):AddItem(zone, 60) end end})
+
+-- TAB 39: DESTRUCTION
+local DestructionTab = Window:CreateTab("💥 Destruction", nil)
+
+DestructionTab:CreateButton({Name = "💣 Nuke", Callback = function() local root = getRoot() if root then local nuke = Instance.new("Part") nuke.Shape = Enum.PartType.Ball nuke.Size = Vector3.new(10, 10, 10) nuke.Position = root.Position + Vector3.new(0, 100, 0) nuke.Parent = workspace wait(3) local exp = Instance.new("Explosion") exp.Position = nuke.Position exp.BlastRadius = 100 exp.Parent = workspace nuke:Destroy() Rayfield:Notify({Title = "NUKE!", Duration = 3}) end end})
+
+DestructionTab:CreateButton({Name = "⚡ Lightning Storm", Callback = function() spawn(function() for i = 1, 50 do local pos = Vector3.new(math.random(-100, 100), 0, math.random(-100, 100)) local bolt = Instance.new("Part") bolt.Size = Vector3.new(2, 200, 2) bolt.Material = Enum.Material.Neon bolt.Anchored = true bolt.Position = pos + Vector3.new(0, 100, 0) bolt.Parent = workspace local exp = Instance.new("Explosion") exp.Position = pos exp.Parent = workspace game:GetService("Debris"):AddItem(bolt, 0.5) wait(0.3) end end) end})
+
+-- TAB 40: MUSIC PLAYER
+local MusicTab = Window:CreateTab("🎵 Music", nil)
+local musicPlaying = nil
+
+local songs = {
+    ["Megalovania"] = "2633717167",
+    ["Astronomia"] = "4510857537",
+    ["Giorno Theme"] = "5253542741"
+}
+
+for name, id in pairs(songs) do
+    MusicTab:CreateButton({Name = "🎵 "..name, Callback = function() if musicPlaying then musicPlaying:Stop() musicPlaying:Destroy() end musicPlaying = Instance.new("Sound") musicPlaying.SoundId = "rbxassetid://"..id musicPlaying.Volume = 0.5 musicPlaying.Looped = true musicPlaying.Parent = workspace musicPlaying:Play() Rayfield:Notify({Title = "Now Playing: "..name, Duration = 3}) end})
+end
+
+MusicTab:CreateButton({Name = "⏹️ Stop Music", Callback = function() if musicPlaying then musicPlaying:Stop() musicPlaying:Destroy() musicPlaying = nil end end})
+
+-- TAB 41: ADMIN PRO
+local AdminProTab = Window:CreateTab("👑 Admin Pro", nil)
+
+AdminProTab:CreateButton({Name = "❄️ Freeze All", Callback = function() for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then plr.Character.HumanoidRootPart.Anchored = true end end Rayfield:Notify({Title = "All Frozen!", Duration = 2}) end})
+
+AdminProTab:CreateButton({Name = "🔓 Unfreeze All", Callback = function() for _, plr in pairs(Players:GetPlayers()) do if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then plr.Character.HumanoidRootPart.Anchored = false end end end})
+
+AdminProTab:CreateButton({Name = "💥 Fling All", Callback = function() for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then local bv = Instance.new("BodyVelocity") bv.Velocity = Vector3.new(math.random(-100, 100), 200, math.random(-100, 100)) bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge) bv.Parent = plr.Character.HumanoidRootPart game:GetService("Debris"):AddItem(bv, 1) end end end})
+
+AdminProTab:CreateButton({Name = "🌐 Bring All", Callback = function() local root = getRoot() if root then for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then plr.Character.HumanoidRootPart.CFrame = root.CFrame end end end end})
+
+-- TAB 42: BOSS MODE
+local BossModeTab = Window:CreateTab("👹 Boss Mode", nil)
+
+BossModeTab:CreateButton({Name = "👹 Activate Boss Mode", Callback = function() pcall(function() local char = getChar() local hum = getHumanoid() if char and hum then for _, scale in pairs(hum:GetChildren()) do if scale:IsA("NumberValue") and scale.Name:match("Scale") then scale.Value = 3 end end for _, part in pairs(char:GetDescendants()) do if part:IsA("BasePart") then part.Material = Enum.Material.Neon part.BrickColor = BrickColor.new("Really black") local fire = Instance.new("Fire") fire.Color = Color3.fromRGB(100, 0, 255) fire.Size = 15 fire.Parent = part end end hum.MaxHealth = 10000 hum.Health = 10000 hum.WalkSpeed = 50 hum.JumpPower = 200 local root = getRoot() if root then for i = 1, 12 do local orb = Instance.new("Part") orb.Shape = Enum.PartType.Ball orb.Size = Vector3.new(3, 3, 3) orb.Material = Enum.Material.Neon orb.BrickColor = BrickColor.new("Dark indigo") orb.Anchored = true orb.CanCollide = false orb.Parent = workspace spawn(function() while orb and orb.Parent and char and char.Parent do local angle = (i / 12) * math.pi * 2 + tick() orb.Position = root.Position + Vector3.new(math.cos(angle) * 8, math.sin(tick() * 2) * 3, math.sin(angle) * 8) wait() end end) end end Rayfield:Notify({Title = "BOSS MODE!", Content = "YOU ARE THE FINAL BOSS!", Duration = 5}) end end) end})
+
+BossModeTab:CreateButton({Name = "⚡ Ultimate Attack", Callback = function() local root = getRoot() if root then for angle = 0, 360, 30 do local beam = Instance.new("Part") beam.Size = Vector3.new(2, 2, 100) beam.Material = Enum.Material.Neon beam.Anchored = true beam.CFrame = root.CFrame * CFrame.Angles(0, math.rad(angle), 0) * CFrame.new(0, 0, -50) beam.Parent = workspace game:GetService("Debris"):AddItem(beam, 2) end for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character then local hum = plr.Character:FindFirstChildOfClass("Humanoid") if hum then hum.Health = 0 end end end Rayfield:Notify({Title = "ULTIMATE ATTACK!", Duration = 3}) end end})
+
+BossModeTab:CreateButton({Name = "🌑 Dark Dimension", Callback = function() Lighting.Ambient = Color3.fromRGB(0, 0, 0) Lighting.Brightness = 0 Lighting.FogEnd = 50 Lighting.FogColor = Color3.fromRGB(10, 0, 20) Rayfield:Notify({Title = "Dark Dimension!", Duration = 3}) end})

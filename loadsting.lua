@@ -1336,6 +1336,38 @@ ScriptsTab:CreateButton({
 })
 
 ScriptsTab:CreateButton({
+    Name = "🔨 StrongMan Simulator",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Strongman-Simulator-Strongman-Simolator-41260"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "StrongMan Simulator script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 The Forge",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 The Forge",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 The Forge",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
     Name = "🔨 The Forge",
     Callback = function()
         loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()

@@ -1311,6 +1311,45 @@ ScriptsTab:CreateButton({
     end
 })
 
+ScriptsTab:CreateButton({
+    Name = "🔨 Blade Ball",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Akash1al/Blade-Ball-Updated-Script/refs/heads/main/Blade-Ball-Script"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 Fnaf CO-OP",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Asphronium/FnafCo-opGUI/main/fnafCo-opGUI.lua"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 Fnaf Enthernal",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Snipez-Dev/Rbx-Scripts/refs/heads/main/Eternal%20Nights"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 The Forge",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
+
+ScriptsTab:CreateButton({
+    Name = "🔨 The Forge",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
+        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
+    end
+})
 -- ============================================
 -- TAB 6: ADMIN
 -- ============================================

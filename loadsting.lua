@@ -3511,6 +3511,900 @@ KeybindTab:CreateLabel("F - Toggle Fly")
 KeybindTab:CreateLabel("E - Toggle ESP")
 KeybindTab:CreateLabel("K - Toggle UI")
 
+-- ============================================
+-- TAB 24: WORLD MANIPULATION
+-- ============================================
+local WorldTab = Window:CreateTab("🌍 World", nil)
+WorldTab:CreateSection("World Controls")
+
+WorldTab:CreateButton({
+    Name = "🌅 Change Time to Morning",
+    Callback = function()
+        Lighting.ClockTime = 8
+        Rayfield:Notify({Title = "Time Changed", Content = "Good morning!", Duration = 2})
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "🌆 Change Time to Noon",
+    Callback = function()
+        Lighting.ClockTime = 12
+        Rayfield:Notify({Title = "Time Changed", Content = "High noon!", Duration = 2})
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "🌃 Change Time to Night",
+    Callback = function()
+        Lighting.ClockTime = 0
+        Rayfield:Notify({Title = "Time Changed", Content = "Good night!", Duration = 2})
+    end
+})
+
+WorldTab:CreateSlider({
+    Name = "⏰ Custom Time",
+    Range = {0, 24},
+    Increment = 1,
+    CurrentValue = 12,
+    Callback = function(val)
+        Lighting.ClockTime = val
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "☀️ Always Day",
+    Callback = function()
+        spawn(function()
+            for i = 1, 1000 do
+                Lighting.ClockTime = 12
+                wait(1)
+            end
+        end)
+        Rayfield:Notify({Title = "Always Day", Content = "Time locked to day!", Duration = 2})
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "🌙 Always Night",
+    Callback = function()
+        spawn(function()
+            for i = 1, 1000 do
+                Lighting.ClockTime = 0
+                wait(1)
+            end
+        end)
+        Rayfield:Notify({Title = "Always Night", Content = "Time locked to night!", Duration = 2})
+    end
+})
+
+WorldTab:CreateSlider({
+    Name = "🌫️ Fog Distance",
+    Range = {0, 10000},
+    Increment = 100,
+    CurrentValue = 1000,
+    Callback = function(val)
+        Lighting.FogEnd = val
+    end
+})
+
+WorldTab:CreateSlider({
+    Name = "☀️ Brightness",
+    Range = {0, 10},
+    Increment = 0.5,
+    CurrentValue = 2,
+    Callback = function(val)
+        Lighting.Brightness = val
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "🔥 Apocalypse Mode",
+    Callback = function()
+        Lighting.Ambient = Color3.fromRGB(255, 0, 0)
+        Lighting.OutdoorAmbient = Color3.fromRGB(100, 0, 0)
+        Lighting.FogColor = Color3.fromRGB(50, 0, 0)
+        Lighting.FogEnd = 500
+        Lighting.ClockTime = 0
+        Rayfield:Notify({Title = "Apocalypse Mode", Content = "End of the world!", Duration = 2})
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "❄️ Winter Mode",
+    Callback = function()
+        Lighting.Ambient = Color3.fromRGB(150, 200, 255)
+        Lighting.OutdoorAmbient = Color3.fromRGB(200, 220, 255)
+        Lighting.FogColor = Color3.fromRGB(200, 200, 255)
+        Rayfield:Notify({Title = "Winter Mode", Content = "Let it snow!", Duration = 2})
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "🌊 Underwater Effect",
+    Callback = function()
+        Lighting.Ambient = Color3.fromRGB(0, 100, 200)
+        Lighting.OutdoorAmbient = Color3.fromRGB(0, 50, 150)
+        Lighting.FogColor = Color3.fromRGB(0, 50, 100)
+        Lighting.FogEnd = 200
+        Rayfield:Notify({Title = "Underwater", Content = "Deep sea vibes!", Duration = 2})
+    end
+})
+
+WorldTab:CreateButton({
+    Name = "🔄 Reset Lighting",
+    Callback = function()
+        Lighting.Ambient = Color3.fromRGB(70, 70, 70)
+        Lighting.OutdoorAmbient = Color3.fromRGB(70, 70, 70)
+        Lighting.Brightness = 2
+        Lighting.ClockTime = 14
+        Lighting.FogEnd = 100000
+        Rayfield:Notify({Title = "Lighting Reset", Content = "Back to normal!", Duration = 2})
+    end
+})
+
+-- ============================================
+-- TAB 25: AUDIO CONTROLS
+-- ============================================
+local AudioTab = Window:CreateTab("🎵 Audio", nil)
+AudioTab:CreateSection("Audio Controls")
+
+AudioTab:CreateInput({
+    Name = "🎵 Play Sound ID",
+    PlaceholderText = "Enter Sound ID",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(text)
+        pcall(function()
+            local sound = Instance.new("Sound")
+            sound.SoundId = "rbxassetid://"..text
+            sound.Volume = 1
+            sound.Parent = workspace
+            sound:Play()
+            Rayfield:Notify({Title = "Sound Playing", Content = "ID: "..text, Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateSlider({
+    Name = "🔊 Master Volume",
+    Range = {0, 10},
+    Increment = 0.5,
+    CurrentValue = 5,
+    Callback = function(val)
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound.Volume = val / 10
+                end
+            end
+        end)
+    end
+})
+
+AudioTab:CreateButton({
+    Name = "🎶 Play Random Music",
+    Callback = function()
+        local musicIDs = {
+            "1839246711",
+            "142376088",
+            "130768299",
+            "155313239",
+            "1845458027"
+        }
+        local randomID = musicIDs[math.random(1, #musicIDs)]
+        
+        pcall(function()
+            local sound = Instance.new("Sound")
+            sound.SoundId = "rbxassetid://"..randomID
+            sound.Volume = 0.5
+            sound.Looped = true
+            sound.Parent = workspace
+            sound:Play()
+            Rayfield:Notify({Title = "Music Playing", Content = "Random track!", Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateButton({
+    Name = "🔇 Mute All Sounds",
+    Callback = function()
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound.Volume = 0
+                end
+            end
+            Rayfield:Notify({Title = "Sounds Muted", Content = "All audio silenced!", Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateButton({
+    Name = "🔊 Unmute All Sounds",
+    Callback = function()
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound.Volume = 0.5
+                end
+            end
+            Rayfield:Notify({Title = "Sounds Unmuted", Content = "Audio restored!", Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateButton({
+    Name = "⏸️ Pause All Sounds",
+    Callback = function()
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") and sound.Playing then
+                    sound:Pause()
+                end
+            end
+            Rayfield:Notify({Title = "Sounds Paused", Content = "All audio paused!", Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateButton({
+    Name = "▶️ Resume All Sounds",
+    Callback = function()
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound:Resume()
+                end
+            end
+            Rayfield:Notify({Title = "Sounds Resumed", Content = "Audio playing again!", Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateButton({
+    Name = "🗑️ Stop All Sounds",
+    Callback = function()
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound:Stop()
+                    sound:Destroy()
+                end
+            end
+            Rayfield:Notify({Title = "Sounds Stopped", Content = "All sounds removed!", Duration = 2})
+        end)
+    end
+})
+
+AudioTab:CreateSlider({
+    Name = "⏩ Playback Speed",
+    Range = {0.1, 5},
+    Increment = 0.1,
+    CurrentValue = 1,
+    Callback = function(val)
+        pcall(function()
+            for _, sound in pairs(workspace:GetDescendants()) do
+                if sound:IsA("Sound") then
+                    sound.PlaybackSpeed = val
+                end
+            end
+        end)
+    end
+})
+
+-- ============================================
+-- TAB 26: VEHICLE MODS
+-- ============================================
+local VehicleTab = Window:CreateTab("🚗 Vehicle", nil)
+VehicleTab:CreateSection("Vehicle Modifications")
+
+VehicleTab:CreateToggle({
+    Name = "🚀 Vehicle Speed Boost",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    pcall(function()
+                        local char = getChar()
+                        if char and char:FindFirstChild("Humanoid") then
+                            if char.Humanoid.SeatPart then
+                                local vehicle = char.Humanoid.SeatPart.Parent
+                                if vehicle:FindFirstChild("VehicleSeat") then
+                                    vehicle.VehicleSeat.MaxSpeed = 200
+                                end
+                            end
+                        end
+                    end)
+                    wait(0.1)
+                end
+            end)
+            Rayfield:Notify({Title = "Vehicle Speed Boost ON", Content = "Maximum speed!", Duration = 2})
+        end
+    end
+})
+
+VehicleTab:CreateToggle({
+    Name = "🎮 Vehicle Fly",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    pcall(function()
+                        local char = getChar()
+                        if char and char:FindFirstChild("Humanoid") then
+                            if char.Humanoid.SeatPart then
+                                local vehicle = char.Humanoid.SeatPart.Parent
+                                
+                                if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                                    for _, part in pairs(vehicle:GetDescendants()) do
+                                        if part:IsA("BasePart") then
+                                            part.AssemblyLinearVelocity = Vector3.new(
+                                                part.AssemblyLinearVelocity.X,
+                                                50,
+                                                part.AssemblyLinearVelocity.Z
+                                            )
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    wait()
+                end
+            end)
+            Rayfield:Notify({Title = "Vehicle Fly ON", Content = "Press Space to fly!", Duration = 2})
+        end
+    end
+})
+
+VehicleTab:CreateButton({
+    Name = "🚁 Spawn Basic Car",
+    Callback = function()
+        pcall(function()
+            local root = getRoot()
+            if root then
+                local car = Instance.new("Model")
+                car.Name = "CustomCar"
+                
+                local body = Instance.new("Part")
+                body.Size = Vector3.new(6, 2, 12)
+                body.BrickColor = BrickColor.Random()
+                body.Anchored = true
+                body.Position = root.Position + Vector3.new(10, 5, 0)
+                body.Parent = car
+                
+                local seat = Instance.new("VehicleSeat")
+                seat.Size = Vector3.new(2, 1, 2)
+                seat.Position = body.Position + Vector3.new(0, 1.5, 0)
+                seat.Parent = car
+                
+                body.Anchored = false
+                car.Parent = workspace
+                Rayfield:Notify({Title = "Car Spawned", Content = "Vehicle created!", Duration = 2})
+            end
+        end)
+    end
+})
+
+VehicleTab:CreateToggle({
+    Name = "🎯 Auto Drive Forward",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    pcall(function()
+                        local char = getChar()
+                        if char and char:FindFirstChild("Humanoid") then
+                            if char.Humanoid.SeatPart then
+                                char.Humanoid.SeatPart.ThrottleFloat = 1
+                            end
+                        end
+                    end)
+                    wait(0.1)
+                end
+            end)
+            Rayfield:Notify({Title = "Auto Drive ON", Content = "Vehicle drives automatically!", Duration = 2})
+        end
+    end
+})
+
+VehicleTab:CreateButton({
+    Name = "🔧 Fix Vehicle",
+    Callback = function()
+        pcall(function()
+            local char = getChar()
+            if char and char:FindFirstChild("Humanoid") then
+                if char.Humanoid.SeatPart then
+                    local vehicle = char.Humanoid.SeatPart.Parent
+                    for _, part in pairs(vehicle:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.Transparency = 0
+                            part.CanCollide = true
+                        end
+                    end
+                    Rayfield:Notify({Title = "Vehicle Fixed", Content = "Vehicle repaired!", Duration = 2})
+                end
+            end
+        end)
+    end
+})
+
+-- ============================================
+-- TAB 27: GAME SPECIFIC
+-- ============================================
+local GameSpecificTab = Window:CreateTab("🎯 Game Tools", nil)
+GameSpecificTab:CreateSection("Universal Game Tools")
+
+GameSpecificTab:CreateButton({
+    Name = "🔄 Rejoin Server",
+    Callback = function()
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+    end
+})
+
+GameSpecificTab:CreateButton({
+    Name = "🔀 Server Hop",
+    Callback = function()
+        local TeleportService = game:GetService("TeleportService")
+        TeleportService:Teleport(game.PlaceId)
+    end
+})
+
+GameSpecificTab:CreateButton({
+    Name = "🌐 Join Smallest Server",
+    Callback = function()
+        local Http = game:GetService("HttpService")
+        local TPS = game:GetService("TeleportService")
+        local Api = "https://games.roblox.com/v1/games/"
+        
+        local _places = Api..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
+        local function ListServers()
+            local Raw = game:HttpGet(_places)
+            local Decoded = Http:JSONDecode(Raw)
+            local servers = Decoded.data
+            table.sort(servers, function(a, b) return a.playing < b.playing end)
+            return servers[1]
+        end
+        
+        local server = ListServers()
+        TPS:TeleportToPlaceInstance(game.PlaceId, server.id, player)
+        Rayfield:Notify({Title = "Server Hop", Content = "Joining smallest server...", Duration = 2})
+    end
+})
+
+GameSpecificTab:CreateButton({
+    Name = "📊 Show Server Stats",
+    Callback = function()
+        pcall(function()
+            local playerCount = #Players:GetPlayers()
+            local maxPlayers = Players.MaxPlayers
+            local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue())
+            local fps = math.floor(workspace:GetRealPhysicsFPS())
+            
+            Rayfield:Notify({
+                Title = "Server Stats",
+                Content = "Players: "..playerCount.."/"..maxPlayers.."\nPing: "..ping.."ms\nFPS: "..fps,
+                Duration = 5
+            })
+        end)
+    end
+})
+
+GameSpecificTab:CreateButton({
+    Name = "🔗 Copy Game Link",
+    Callback = function()
+        setclipboard("https://www.roblox.com/games/"..game.PlaceId)
+        Rayfield:Notify({Title = "Copied", Content = "Game link copied to clipboard", Duration = 2})
+    end
+})
+
+GameSpecificTab:CreateButton({
+    Name = "📋 Copy Place ID",
+    Callback = function()
+        setclipboard(tostring(game.PlaceId))
+        Rayfield:Notify({Title = "Copied", Content = "Place ID: "..game.PlaceId, Duration = 2})
+    end
+})
+
+GameSpecificTab:CreateSection("Anti-Cheat Bypass")
+
+GameSpecificTab:CreateButton({
+    Name = "🔒 Anti-Kick",
+    Callback = function()
+        pcall(function()
+            local mt = getrawmetatable(game)
+            local oldNamecall = mt.__namecall
+            setreadonly(mt, false)
+            
+            mt.__namecall = newcclosure(function(self, ...)
+                local method = getnamecallmethod()
+                if method == "Kick" then
+                    return
+                end
+                return oldNamecall(self, ...)
+            end)
+            
+            setreadonly(mt, true)
+            Rayfield:Notify({Title = "Anti-Kick Active", Content = "You cannot be kicked!", Duration = 2})
+        end)
+    end
+})
+
+GameSpecificTab:CreateButton({
+    Name = "📡 Disable Anti-Cheat",
+    Callback = function()
+        pcall(function()
+            for _, obj in pairs(game:GetDescendants()) do
+                if obj:IsA("LocalScript") and (obj.Name:lower():find("anti") or obj.Name:lower():find("cheat")) then
+                    obj:Destroy()
+                end
+            end
+            Rayfield:Notify({Title = "Anti-Cheat Disabled", Content = "Anti-cheat scripts removed!", Duration = 2})
+        end)
+    end
+})
+
+-- ============================================
+-- TAB 28: PETS SYSTEM
+-- ============================================
+local PetsTab = Window:CreateTab("🐾 Pets", nil)
+PetsTab:CreateSection("Pet System")
+
+local petFollowing = false
+local currentPet = nil
+
+PetsTab:CreateButton({
+    Name = "🐕 Spawn Dog Pet",
+    Callback = function()
+        pcall(function()
+            if currentPet then currentPet:Destroy() end
+            
+            local pet = Instance.new("Part")
+            pet.Size = Vector3.new(2, 2, 3)
+            pet.BrickColor = BrickColor.new("Brown")
+            pet.Material = Enum.Material.SmoothPlastic
+            pet.Name = "DogPet"
+            pet.Anchored = true
+            pet.CanCollide = false
+            pet.Parent = workspace
+            
+            currentPet = pet
+            petFollowing = true
+            
+            spawn(function()
+                while petFollowing and currentPet and currentPet.Parent do
+                    local root = getRoot()
+                    if root then
+                        currentPet.CFrame = root.CFrame * CFrame.new(3, -2, -3)
+                    end
+                    wait(0.1)
+                end
+            end)
+            
+            Rayfield:Notify({Title = "Dog Pet Spawned", Content = "Your loyal companion!", Duration = 2})
+        end)
+    end
+})
+
+PetsTab:CreateButton({
+    Name = "🐱 Spawn Cat Pet",
+    Callback = function()
+        pcall(function()
+            if currentPet then currentPet:Destroy() end
+            
+            local pet = Instance.new("Part")
+            pet.Size = Vector3.new(1.5, 1.5, 2)
+            pet.BrickColor = BrickColor.new("Orange")
+            pet.Material = Enum.Material.SmoothPlastic
+            pet.Name = "CatPet"
+            pet.Anchored = true
+            pet.CanCollide = false
+            pet.Parent = workspace
+            
+            currentPet = pet
+            petFollowing = true
+            
+            spawn(function()
+                while petFollowing and currentPet and currentPet.Parent do
+                    local root = getRoot()
+                    if root then
+                        currentPet.CFrame = root.CFrame * CFrame.new(-3, -2, -3)
+                    end
+                    wait(0.1)
+                end
+            end)
+            
+            Rayfield:Notify({Title = "Cat Pet Spawned", Content = "Meow! 🐱", Duration = 2})
+        end)
+    end
+})
+
+PetsTab:CreateButton({
+    Name = "🐉 Spawn Dragon Pet",
+    Callback = function()
+        pcall(function()
+            if currentPet then currentPet:Destroy() end
+            
+            local pet = Instance.new("Part")
+            pet.Size = Vector3.new(3, 3, 5)
+            pet.BrickColor = BrickColor.new("Really red")
+            pet.Material = Enum.Material.Neon
+            pet.Name = "DragonPet"
+            pet.Anchored = true
+            pet.CanCollide = false
+            pet.Parent = workspace
+            
+            local fire = Instance.new("Fire")
+            fire.Size = 5
+            fire.Parent = pet
+            
+            currentPet = pet
+            petFollowing = true
+            
+            spawn(function()
+                while petFollowing and currentPet and currentPet.Parent do
+                    local root = getRoot()
+                    if root then
+                        currentPet.CFrame = root.CFrame * CFrame.new(0, 5, -5)
+                    end
+                    wait(0.1)
+                end
+            end)
+            
+            Rayfield:Notify({Title = "Dragon Pet Spawned", Content = "Epic dragon! 🐉", Duration = 2})
+        end)
+    end
+})
+
+PetsTab:CreateButton({
+    Name = "👻 Spawn Ghost Pet",
+    Callback = function()
+        pcall(function()
+            if currentPet then currentPet:Destroy() end
+            
+            local pet = Instance.new("Part")
+            pet.Size = Vector3.new(2, 3, 2)
+            pet.Shape = Enum.PartType.Ball
+            pet.BrickColor = BrickColor.new("White")
+            pet.Material = Enum.Material.ForceField
+            pet.Transparency = 0.5
+            pet.Name = "GhostPet"
+            pet.Anchored = true
+            pet.CanCollide = false
+            pet.Parent = workspace
+            
+            currentPet = pet
+            petFollowing = true
+            
+            spawn(function()
+                while petFollowing and currentPet and currentPet.Parent do
+                    local root = getRoot()
+                    if root then
+                        local bobbing = math.sin(tick() * 2) * 2
+                        currentPet.CFrame = root.CFrame * CFrame.new(4, bobbing, -4)
+                    end
+                    wait(0.1)
+                end
+            end)
+            
+            Rayfield:Notify({Title = "Ghost Pet Spawned", Content = "Spooky friend! 👻", Duration = 2})
+        end)
+    end
+})
+
+PetsTab:CreateButton({
+    Name = "🗑️ Remove Pet",
+    Callback = function()
+        if currentPet then
+            currentPet:Destroy()
+            petFollowing = false
+            currentPet = nil
+            Rayfield:Notify({Title = "Pet Removed", Content = "Goodbye friend!", Duration = 2})
+        end
+    end
+})
+
+PetsTab:CreateToggle({
+    Name = "🎯 Pet Follow",
+    CurrentValue = true,
+    Callback = function(val)
+        petFollowing = val
+        Rayfield:Notify({Title = val and "Pet Following" or "Pet Stopped", Content = val and "Pet will follow you!" or "Pet stays in place", Duration = 2})
+    end
+})
+
+-- ============================================
+-- TAB 29: WORKSPACE TOOLS
+-- ============================================
+local WorkspaceTab = Window:CreateTab("🔨 Workspace", nil)
+WorkspaceTab:CreateSection("Workspace Manipulation")
+
+WorkspaceTab:CreateButton({
+    Name = "🏗️ Platform Under Player",
+    Callback = function()
+        pcall(function()
+            local root = getRoot()
+            if root then
+                local platform = Instance.new("Part")
+                platform.Size = Vector3.new(10, 1, 10)
+                platform.Position = root.Position - Vector3.new(0, 3, 0)
+                platform.Anchored = true
+                platform.Material = Enum.Material.Neon
+                platform.BrickColor = BrickColor.Random()
+                platform.Parent = workspace
+                Rayfield:Notify({Title = "Platform Created", Content = "Standing platform spawned!", Duration = 2})
+            end
+        end)
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "🎯 Remove Terrain",
+    Callback = function()
+        workspace.Terrain:Clear()
+        Rayfield:Notify({Title = "Terrain Removed", Content = "All terrain deleted!", Duration = 2})
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "💣 Delete Everything",
+    Callback = function()
+        pcall(function()
+            for _, obj in pairs(workspace:GetChildren()) do
+                if not obj:IsA("Terrain") and not obj:IsA("Camera") and not Players:GetPlayerFromCharacter(obj) then
+                    obj:Destroy()
+                end
+            end
+            Rayfield:Notify({Title = "Workspace Cleared", Content = "Everything deleted!", Duration = 2})
+        end)
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "🌊 Flood Workspace",
+    Callback = function()
+        pcall(function()
+            local water = Instance.new("Part")
+            water.Size = Vector3.new(2000, 50, 2000)
+            water.Position = Vector3.new(0, 0, 0)
+            water.Anchored = true
+            water.Material = Enum.Material.Water
+            water.BrickColor = BrickColor.new("Bright blue")
+            water.Transparency = 0.3
+            water.CanCollide = false
+            water.Name = "Flood"
+            water.Parent = workspace
+            Rayfield:Notify({Title = "Flood Created", Content = "Workspace is flooded!", Duration = 2})
+        end)
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "🔥 Lava Floor",
+    Callback = function()
+        pcall(function()
+            local lava = Instance.new("Part")
+            lava.Size = Vector3.new(2000, 5, 2000)
+            lava.Position = Vector3.new(0, -10, 0)
+            lava.Anchored = true
+            lava.Material = Enum.Material.Neon
+            lava.BrickColor = BrickColor.new("Really red")
+            lava.Name = "Lava"
+            lava.Parent = workspace
+            
+            lava.Touched:Connect(function(hit)
+                if hit.Parent:FindFirstChild("Humanoid") then
+                    hit.Parent.Humanoid.Health = 0
+                end
+            end)
+            
+            Rayfield:Notify({Title = "Lava Floor", Content = "Don't touch the lava!", Duration = 2})
+        end)
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "🎪 Spawn Obby Course",
+    Callback = function()
+        pcall(function()
+            local root = getRoot()
+            if root then
+                for i = 1, 20 do
+                    local platform = Instance.new("Part")
+                    platform.Size = Vector3.new(10, 1, 10)
+                    platform.Position = root.Position + Vector3.new(i * 12, math.random(0, 5), 0)
+                    platform.Anchored = true
+                    platform.BrickColor = BrickColor.Random()
+                    platform.Material = Enum.Material.Neon
+                    platform.Parent = workspace
+                end
+                Rayfield:Notify({Title = "Obby Created", Content = "Parkour time!", Duration = 2})
+            end
+        end)
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "🌈 Rainbow All Parts",
+    Callback = function()
+        spawn(function()
+            for i = 1, 100 do
+                for _, obj in pairs(workspace:GetDescendants()) do
+                    if obj:IsA("BasePart") then
+                        obj.Color = Color3.fromHSV(i / 100, 1, 1)
+                    end
+                end
+                wait(0.1)
+            end
+        end)
+        Rayfield:Notify({Title = "Rainbow Workspace", Content = "Everything is rainbow!", Duration = 2})
+    end
+})
+
+WorkspaceTab:CreateButton({
+    Name = "🗑️ Delete All NPCs",
+    Callback = function()
+        pcall(function()
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj:FindFirstChild("Humanoid") and not Players:GetPlayerFromCharacter(obj) then
+                    obj:Destroy()
+                end
+            end
+            Rayfield:Notify({Title = "NPCs Deleted", Content = "All NPCs removed!", Duration = 2})
+        end)
+    end
+})
+
+-- ============================================
+-- TAB 30: ADVANCED UTILITIES
+-- ============================================
+local AdvancedTab = Window:CreateTab("⚙️ Advanced", nil)
+AdvancedTab:CreateSection("Advanced Features")
+
+AdvancedTab:CreateButton({
+    Name = "🎮 Unlock All GamePasses",
+    Callback = function()
+        pcall(function()
+            local MarketplaceService = game:GetService("MarketplaceService")
+            MarketplaceService.UserOwnsGamePassAsync = function(self, userId, gamePassId)
+                return true
+            end
+            Rayfield:Notify({Title = "GamePasses Unlocked", Content = "All gamepasses unlocked (client-side)", Duration = 3})
+        end)
+    end
+})
+
+AdvancedTab:CreateButton({
+    Name = "💎 Unlock Developer Products",
+    Callback = function()
+        pcall(function()
+            local MarketplaceService = game:GetService("MarketplaceService")
+            MarketplaceService.ProcessReceipt = function()
+                return Enum.Product
 print("👑 Made by qShadow/Darius/Hynexx")
 print("🔥 THIS IS THE ULTIMATE ROBLOX SCRIPT!")
- 
+10:49 AM
+PurchaseDecision.PurchaseGranted end Rayfield:Notify({Title = "Products Unlocked", Content = "Developer products unlocked!", Duration = 2}) end) end })
+
+AdvancedTab:CreateButton({ Name = "🔓 Unlock All Doors", Callback = function() pcall(function() for _, obj in pairs(workspace:GetDescendants()) do if obj.Name:lower():match("door") and obj:IsA("Model") then for _, part in pairs(obj:GetDescendants()) do if part:IsA("BasePart") then part.CanCollide = false part.Transparency = 0.5 end end end end Rayfield:Notify({Title = "Doors Unlocked", Content = "All doors are now passable!", Duration = 2}) end) end })
+
+AdvancedTab:CreateButton({ Name = "📋 Copy Script Source", Callback = function() setclipboard("-- Universal Script Premium v3.0") Rayfield:Notify({Title = "Copied!", Content = "Script info copied to clipboard", Duration = 2}) end })
+
+AdvancedTab:CreateSection("Performance")
+
+AdvancedTab:CreateToggle({ Name = "⚡ Performance Mode", CurrentValue = false, Callback = function(val) pcall(function() if val then settings().Rendering.QualityLevel = Enum.QualityLevel.Level01 Rayfield:Notify({Title = "Performance Mode ON", Content = "Lower graphics for better FPS", Duration = 2}) else settings().Rendering.QualityLevel = Enum.QualityLevel.Automatic Rayfield:Notify({Title = "Performance Mode OFF", Content = "Normal graphics", Duration = 2}) end end) end })
+
+AdvancedTab:CreateButton({ Name = "🗑️ Clear Memory", Callback = function() pcall(function() for _, obj in pairs(workspace:GetChildren()) do if not obj:IsA("Terrain") and not obj:IsA("Camera") and not Players:GetPlayerFromCharacter(obj) then if obj:IsA("Part") and not obj.Anchored then obj:Destroy() end end end Rayfield:Notify({Title = "Memory Cleared", Content = "Unnecessary objects removed!", Duration = 2}) end) end })
+
+-- Final notification Rayfield:Notify({ Title = "🎉 ULTIMATE SCRIPT LOADED!", Content = "30 TABS | 400+ FEATURES | READY TO USE!", Duration = 5, Image = 4483362458 })
+
+print("✅ Universal Script Premium v3.0 - FULLY LOADED!")
+print("📊 Total Tabs: 30")
+print("🚀 Total Features: 400+")
+print("💎 Status: COMPLETE & OPTIMIZED")
+print("👑 Made by qShadow/Darius/Hynexx")
+print("🔥 THE MOST COMPLETE ROBLOX SCRIPT!")
+print("⚠️  Use responsibly - Violates Roblox ToS")
+

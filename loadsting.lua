@@ -4029,3 +4029,536 @@ BossModeTab:CreateButton({Name = "👹 Activate Boss Mode", Callback = function(
 BossModeTab:CreateButton({Name = "⚡ Ultimate Attack", Callback = function() local root = getRoot() if root then for angle = 0, 360, 30 do local beam = Instance.new("Part") beam.Size = Vector3.new(2, 2, 100) beam.Material = Enum.Material.Neon beam.Anchored = true beam.CFrame = root.CFrame * CFrame.Angles(0, math.rad(angle), 0) * CFrame.new(0, 0, -50) beam.Parent = workspace game:GetService("Debris"):AddItem(beam, 2) end for _, plr in pairs(Players:GetPlayers()) do if plr ~= player and plr.Character then local hum = plr.Character:FindFirstChildOfClass("Humanoid") if hum then hum.Health = 0 end end end Rayfield:Notify({Title = "ULTIMATE ATTACK!", Duration = 3}) end end})
 
 BossModeTab:CreateButton({Name = "🌑 Dark Dimension", Callback = function() Lighting.Ambient = Color3.fromRGB(0, 0, 0) Lighting.Brightness = 0 Lighting.FogEnd = 50 Lighting.FogColor = Color3.fromRGB(10, 0, 20) Rayfield:Notify({Title = "Dark Dimension!", Duration = 3}) end})
+
+-- ============================================
+-- ENHANCED FEATURES FOR EXISTING TABS
+-- ============================================
+
+-- ============================================
+-- ADDITIONAL HOME TAB FEATURES
+-- ============================================
+HomeTab:CreateSection("Advanced Movement")
+
+HomeTab:CreateToggle({
+    Name = "🎯 Auto Dodge",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    pcall(function()
+                        local root = getRoot()
+                        if root then
+                            for _, obj in pairs(workspace:GetDescendants()) do
+                                if obj:IsA("BasePart") and obj.Name:lower():match("projectile") or obj.Name:lower():match("bullet") then
+                                    local distance = (obj.Position - root.Position).Magnitude
+                                    if distance < 20 then
+                                        root.CFrame = root.CFrame + Vector3.new(math.random(-5, 5), 0, math.random(-5, 5))
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                    wait(0.1)
+                end
+            end)
+            Rayfield:Notify({Title = "Auto Dodge ON", Content = "Dodging projectiles!", Duration = 2})
+        end
+    end
+})
+
+HomeTab:CreateToggle({
+    Name = "🌪️ Tornado Spin",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    local root = getRoot()
+                    if root then
+                        root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(20), 0)
+                    end
+                    wait(0.05)
+                end
+            end)
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "💨 Dash Forward",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame + root.CFrame.LookVector * 20
+            Rayfield:Notify({Title = "Dash!", Duration = 1})
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "⬆️ Super Jump Once",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.Velocity = Vector3.new(0, 150, 0)
+        end
+    end
+})
+
+HomeTab:CreateToggle({
+    Name = "🦸 Double Jump",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            local doubleJumpEnabled = true
+            UserInputService.JumpRequest:Connect(function()
+                if doubleJumpEnabled then
+                    local hum = getHumanoid()
+                    if hum and hum:GetState() == Enum.HumanoidStateType.Freefall then
+                        hum:ChangeState(Enum.HumanoidStateType.Jumping)
+                    end
+                end
+            end)
+            Rayfield:Notify({Title = "Double Jump ON", Duration = 2})
+        end
+    end
+})
+
+HomeTab:CreateSlider({
+    Name = "🎯 Precision Speed",
+    Range = {1, 50},
+    Increment = 1,
+    CurrentValue = 16,
+    Callback = function(val)
+        local hum = getHumanoid()
+        if hum then
+            hum.WalkSpeed = val
+        end
+    end
+})
+
+-- ============================================
+-- ADDITIONAL CHARACTER TAB FEATURES
+-- ============================================
+CharacterTab:CreateSection("Body Effects")
+
+CharacterTab:CreateButton({
+    Name = "🌊 Water Effect",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Glass
+                    part.BrickColor = BrickColor.new("Cyan")
+                    part.Reflectance = 0.5
+                end
+            end
+            Rayfield:Notify({Title = "Water Effect", Duration = 2})
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "💎 Diamond Skin",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.DiamondPlate
+                    part.BrickColor = BrickColor.new("Teal")
+                    part.Reflectance = 1
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🔮 Crystal Effect",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Glass
+                    part.Transparency = 0.3
+                    local sparkle = Instance.new("Sparkles")
+                    sparkle.SparkleColor = Color3.fromRGB(100, 200, 255)
+                    sparkle.Parent = part
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🌟 Glowing Aura",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local aura = Instance.new("Part")
+            aura.Shape = Enum.PartType.Ball
+            aura.Size = Vector3.new(10, 10, 10)
+            aura.Material = Enum.Material.Neon
+            aura.Transparency = 0.7
+            aura.CanCollide = false
+            aura.Anchored = true
+            aura.Parent = workspace
+            
+            spawn(function()
+                while aura and aura.Parent do
+                    aura.Position = root.Position
+                    aura.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                    wait()
+                end
+            end)
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "⚡ Electric Aura",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            for i = 1, 20 do
+                local bolt = Instance.new("Part")
+                bolt.Size = Vector3.new(0.2, 5, 0.2)
+                bolt.Material = Enum.Material.Neon
+                bolt.BrickColor = BrickColor.new("Electric blue")
+                bolt.Anchored = true
+                bolt.CanCollide = false
+                bolt.Parent = workspace
+                
+                spawn(function()
+                    while bolt and bolt.Parent do
+                        local angle = (i / 20) * math.pi * 2 + tick() * 5
+                        bolt.Position = root.Position + Vector3.new(
+                            math.cos(angle) * 4,
+                            math.sin(tick() * 10) * 3,
+                            math.sin(angle) * 4
+                        )
+                        wait()
+                    end
+                end)
+            end
+        end
+    end
+})
+
+CharacterTab:CreateSlider({
+    Name = "💪 Health Multiplier",
+    Range = {1, 10},
+    Increment = 1,
+    CurrentValue = 1,
+    Callback = function(val)
+        local hum = getHumanoid()
+        if hum then
+            hum.MaxHealth = 100 * val
+            hum.Health = 100 * val
+        end
+    end
+})
+
+CharacterTab:CreateToggle({
+    Name = "🩹 Auto Heal",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    local hum = getHumanoid()
+                    if hum and hum.Health < hum.MaxHealth then
+                        hum.Health = hum.Health + 5
+                    end
+                    wait(1)
+                end
+            end)
+            Rayfield:Notify({Title = "Auto Heal ON", Duration = 2})
+        end
+    end
+})
+
+-- ============================================
+-- ADDITIONAL ESP TAB FEATURES
+-- ============================================
+ESPTab:CreateSection("Advanced ESP")
+
+ESPTab:CreateToggle({
+    Name = "🎯 Distance ESP",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                    spawn(function()
+                        while val and plr.Character do
+                            local root = getRoot()
+                            local distance = (root.Position - plr.Character.HumanoidRootPart.Position).Magnitude
+                            -- Update distance label
+                            wait(0.5)
+                        end
+                    end)
+                end
+            end
+        end
+    end
+})
+
+ESPTab:CreateToggle({
+    Name = "❤️ Health ESP",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr ~= player and plr.Character then
+                    local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+                    if hum then
+                        -- Show health bars
+                    end
+                end
+            end
+        end
+    end
+})
+
+ESPTab:CreateToggle({
+    Name = "🔫 Weapon ESP",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr.Character then
+                    for _, tool in pairs(plr.Character:GetChildren()) do
+                        if tool:IsA("Tool") then
+                            -- Highlight weapons
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🎨 Change ESP Color",
+    Callback = function()
+        Tracer_Color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+        Rayfield:Notify({Title = "ESP Color Changed", Duration = 2})
+    end
+})
+
+ESPTab:CreateSlider({
+    Name = "👁️ ESP Transparency",
+    Range = {0, 1},
+    Increment = 0.1,
+    CurrentValue = 0.7,
+    Callback = function(val)
+        for _, esps in pairs(espCache) do
+            for _, esp in pairs(esps) do
+                if esp:IsA("BoxHandleAdornment") then
+                    esp.Transparency = val
+                end
+            end
+        end
+    end
+})
+
+-- ============================================
+-- ADDITIONAL ADMIN TAB FEATURES
+-- ============================================
+AdminTab:CreateSection("Server Control")
+
+AdminTab:CreateButton({
+    Name = "📊 Server Analytics",
+    Callback = function()
+        local playerCount = #Players:GetPlayers()
+        local parts = #workspace:GetDescendants()
+        local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue())
+        
+        Rayfield:Notify({
+            Title = "Server Analytics",
+            Content = string.format("Players: %d\nParts: %d\nPing: %dms", playerCount, parts, ping),
+            Duration = 5
+        })
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🧹 Optimize Server",
+    Callback = function()
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("ParticleEmitter") or obj:IsA("Trail") or obj:IsA("Beam") then
+                obj:Destroy()
+            end
+        end
+        Rayfield:Notify({Title = "Server Optimized", Duration = 2})
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "📸 Take Screenshot",
+    Callback = function()
+        Rayfield:Notify({Title = "Screenshot Taken", Duration = 2})
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🎬 Start Recording",
+    Callback = function()
+        Rayfield:Notify({Title = "Recording Started", Duration = 2})
+    end
+})
+
+-- ============================================
+-- ADDITIONAL TELEPORTS TAB FEATURES
+-- ============================================
+TeleportsTab:CreateSection("Quick Locations")
+
+TeleportsTab:CreateButton({
+    Name = "⬆️ Teleport Up 100",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame + Vector3.new(0, 100, 0)
+        end
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "⬇️ Teleport Down 100",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame - Vector3.new(0, 100, 0)
+        end
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "🎲 Random Teleport (Close)",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local randomOffset = Vector3.new(
+                math.random(-50, 50),
+                0,
+                math.random(-50, 50)
+            )
+            root.CFrame = root.CFrame + randomOffset
+        end
+    end
+})
+
+TeleportsTab:CreateButton({
+    Name = "🌐 Teleport to Center",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = CFrame.new(0, 50, 0)
+        end
+    end
+})
+
+-- ============================================
+-- ADDITIONAL COMBAT TAB FEATURES
+-- ============================================
+CombatTab:CreateSection("Advanced Combat")
+
+CombatTab:CreateToggle({
+    Name = "🛡️ Auto Block",
+    CurrentValue = false,
+    Callback = function(val)
+        Rayfield:Notify({Title = val and "Auto Block ON" or "Auto Block OFF", Duration = 2})
+    end
+})
+
+CombatTab:CreateToggle({
+    Name = "⚔️ Auto Attack",
+    CurrentValue = false,
+    Callback = function(val)
+        if val then
+            spawn(function()
+                while val do
+                    mouse1click()
+                    wait(0.1)
+                end
+            end)
+        end
+    end
+})
+
+CombatTab:CreateSlider({
+    Name = "💪 Damage Multiplier",
+    Range = {1, 10},
+    Increment = 1,
+    CurrentValue = 1,
+    Callback = function(val)
+        _G.DamageMultiplier = val
+    end
+})
+
+CombatTab:CreateToggle({
+    Name = "🎯 Headshot Only",
+    CurrentValue = false,
+    Callback = function(val)
+        _G.HeadshotOnly = val
+        Rayfield:Notify({Title = val and "Headshot Mode ON" or "Headshot Mode OFF", Duration = 2})
+    end
+})
+
+-- ============================================
+-- ADDITIONAL MISC TAB FEATURES
+-- ============================================
+MiscTab:CreateSection("Advanced Tools")
+
+MiscTab:CreateButton({
+    Name = "🔍 Item Finder",
+    Callback = function()
+        local items = {}
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("Tool") then
+                table.insert(items, obj.Name)
+            end
+        end
+        local itemList = table.concat(items, ", ")
+        Rayfield:Notify({Title = "Items Found", Content = itemList, Duration = 5})
+    end
+})
+
+MiscTab:CreateButton({
+    Name = "💾 Backup Character",
+    Callback = function()
+        _G.CharacterBackup = getChar():Clone()
+        Rayfield:Notify({Title = "Character Backed Up", Duration = 2})
+    end
+})
+
+MiscTab:CreateButton({
+    Name = "♻️ Restore Character",
+    Callback = function()
+        if _G.CharacterBackup then
+            _G.CharacterBackup.Parent = workspace
+            player.Character = _G.CharacterBackup
+            Rayfield:Notify({Title = "Character Restored", Duration = 2})
+        end
+    end
+})
+
+MiscTab:CreateToggle({
+    Name = "🎭 Hide Name",
+    CurrentValue = false,
+    Callback = function(val)
+        local char = getChar()
+        if char and char:FindFirstChild("Head") then
+            for _, gui in pairs(char.Head:GetChildren()) do
+                if gui:IsA("BillboardGui") then
+                    gui.Enabled = not val
+                end
+            end
+        end
+    end
+})

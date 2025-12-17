@@ -21,7 +21,7 @@ local Window = Rayfield:CreateWindow({
       FileName = "Key",
       SaveKey = false,
       GrabKeyFromSite = false,
-      Key = {"qShadow22"}
+      Key = {"qShadow2"}
    }
 })
 

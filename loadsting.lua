@@ -4562,3 +4562,996 @@ MiscTab:CreateToggle({
         end
     end
 })
+
+-- ============================================
+-- MASSIVE FEATURE EXPANSION - TONS OF BUTTONS FOR EVERY TAB
+-- ============================================
+
+-- ============================================
+-- HOME TAB - MASSIVE EXPANSION
+-- ============================================
+HomeTab:CreateSection("Movement Presets")
+
+HomeTab:CreateButton({
+    Name = "🏃 Sprint Mode (Speed 32)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.WalkSpeed = 32 end
+        Rayfield:Notify({Title = "Sprint Mode", Duration = 1})
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🚶 Walk Mode (Speed 16)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.WalkSpeed = 16 end
+        Rayfield:Notify({Title = "Walk Mode", Duration = 1})
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🐌 Sneak Mode (Speed 8)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.WalkSpeed = 8 end
+        Rayfield:Notify({Title = "Sneak Mode", Duration = 1})
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "⚡ Lightning Speed (100)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.WalkSpeed = 100 end
+        Rayfield:Notify({Title = "Lightning Speed!", Duration = 1})
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🚀 Sonic Speed (200)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.WalkSpeed = 200 end
+        Rayfield:Notify({Title = "Sonic Speed!", Duration = 1})
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "💫 Flash Speed (500)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.WalkSpeed = 500 end
+        Rayfield:Notify({Title = "Flash Speed!", Duration = 1})
+    end
+})
+
+HomeTab:CreateSection("Jump Presets")
+
+HomeTab:CreateButton({
+    Name = "🦘 Low Jump (30)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.JumpPower = 30 end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🦘 Normal Jump (50)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.JumpPower = 50 end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🦘 High Jump (100)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.JumpPower = 100 end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🦘 Super Jump (200)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.JumpPower = 200 end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🦘 Mega Jump (300)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.JumpPower = 300 end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🦘 Ultra Jump (500)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then hum.JumpPower = 500 end
+    end
+})
+
+HomeTab:CreateSection("Quick Actions")
+
+HomeTab:CreateButton({
+    Name = "🔄 Reset Speed & Jump",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            hum.WalkSpeed = 16
+            hum.JumpPower = 50
+            Rayfield:Notify({Title = "Reset to Normal", Duration = 1})
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "⏸️ Freeze Character",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.Anchored = true
+            Rayfield:Notify({Title = "Frozen!", Duration = 1})
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "▶️ Unfreeze Character",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.Anchored = false
+            Rayfield:Notify({Title = "Unfrozen!", Duration = 1})
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "💨 Instant Boost Forward",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame + root.CFrame.LookVector * 30
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "⬅️ Dash Left",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame - root.CFrame.RightVector * 15
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "➡️ Dash Right",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame + root.CFrame.RightVector * 15
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "⬆️ Dash Up",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame + Vector3.new(0, 20, 0)
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "⬇️ Dash Down",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame - Vector3.new(0, 20, 0)
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🔙 Dash Backward",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            root.CFrame = root.CFrame - root.CFrame.LookVector * 15
+        end
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "🌀 360 Spin",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            for i = 1, 36 do
+                root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(10), 0)
+                wait(0.01)
+            end
+        end
+    end
+})
+
+-- ============================================
+-- CHARACTER TAB - MASSIVE EXPANSION
+-- ============================================
+CharacterTab:CreateSection("Size Modifications")
+
+CharacterTab:CreateButton({
+    Name = "👶 Tiny (0.5x)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            for _, scale in pairs(hum:GetChildren()) do
+                if scale:IsA("NumberValue") then scale.Value = 0.5 end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "👦 Small (0.75x)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            for _, scale in pairs(hum:GetChildren()) do
+                if scale:IsA("NumberValue") then scale.Value = 0.75 end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "👨 Normal (1x)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            for _, scale in pairs(hum:GetChildren()) do
+                if scale:IsA("NumberValue") then scale.Value = 1 end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "👨‍🦰 Large (1.5x)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            for _, scale in pairs(hum:GetChildren()) do
+                if scale:IsA("NumberValue") then scale.Value = 1.5 end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🗿 Giant (2x)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            for _, scale in pairs(hum:GetChildren()) do
+                if scale:IsA("NumberValue") then scale.Value = 2 end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🏔️ Titan (5x)",
+    Callback = function()
+        local hum = getHumanoid()
+        if hum then
+            for _, scale in pairs(hum:GetChildren()) do
+                if scale:IsA("NumberValue") then scale.Value = 5 end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateSection("Color Presets")
+
+CharacterTab:CreateButton({
+    Name = "🔴 Red Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Really red")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🔵 Blue Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Really blue")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🟢 Green Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Lime green")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🟡 Yellow Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("New Yeller")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🟣 Purple Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Bright violet")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🟠 Orange Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Deep orange")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "⚫ Black Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Really black")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "⚪ White Character",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.new("Institutional white")
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🌈 Random Color",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.BrickColor = BrickColor.Random()
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateSection("Material Presets")
+
+CharacterTab:CreateButton({
+    Name = "🧱 Brick Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Brick
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "✨ Neon Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Neon
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🪨 Granite Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Granite
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🌳 Wood Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Wood
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🔩 Metal Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Metal
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🧊 Ice Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Ice
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🌊 Glass Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.Glass
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "💎 Diamond Plate Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.DiamondPlate
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🔮 Force Field Material",
+    Callback = function()
+        local char = getChar()
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Material = Enum.Material.ForceField
+                end
+            end
+        end
+    end
+})
+
+CharacterTab:CreateSection("Particle Effects")
+
+CharacterTab:CreateButton({
+    Name = "⭐ Star Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+            particle.Rate = 50
+            particle.Lifetime = NumberRange.new(1, 2)
+            particle.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "💨 Smoke Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local smoke = Instance.new("Smoke")
+            smoke.Size = 5
+            smoke.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🔥 Fire Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local fire = Instance.new("Fire")
+            fire.Size = 10
+            fire.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "✨ Sparkle Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local sparkles = Instance.new("Sparkles")
+            sparkles.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "☁️ Cloud Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/smoke_main.dds"
+            particle.Rate = 30
+            particle.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
+            particle.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "💧 Water Droplets",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/smoke_main.dds"
+            particle.Rate = 100
+            particle.Color = ColorSequence.new(Color3.fromRGB(100, 150, 255))
+            particle.Speed = NumberRange.new(20, 40)
+            particle.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🌸 Flower Petals",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+            particle.Rate = 20
+            particle.Color = ColorSequence.new(Color3.fromRGB(255, 150, 200))
+            particle.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "⚡ Lightning Bolts",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/smoke_main.dds"
+            particle.Rate = 50
+            particle.Color = ColorSequence.new(Color3.fromRGB(100, 200, 255))
+            particle.LightEmission = 1
+            particle.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "🍃 Leaf Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+            particle.Rate = 15
+            particle.Color = ColorSequence.new(Color3.fromRGB(100, 200, 100))
+            particle.Parent = root
+        end
+    end
+})
+
+CharacterTab:CreateButton({
+    Name = "❄️ Snow Particles",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxasset://textures/particles/smoke_main.dds"
+            particle.Rate = 50
+            particle.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
+            particle.Speed = NumberRange.new(5, 15)
+            particle.Parent = root
+        end
+    end
+})
+
+-- ============================================
+-- ESP TAB - MASSIVE EXPANSION
+-- ============================================
+ESPTab:CreateSection("Vision Modes")
+
+ESPTab:CreateButton({
+    Name = "🌟 Night Vision",
+    Callback = function()
+        Lighting.Ambient = Color3.new(1, 1, 1)
+        Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+        Lighting.Brightness = 2
+        Rayfield:Notify({Title = "Night Vision ON", Duration = 2})
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🔴 Thermal Vision",
+    Callback = function()
+        Lighting.Ambient = Color3.fromRGB(255, 50, 50)
+        Lighting.ColorShift_Top = Color3.fromRGB(255, 0, 0)
+        Rayfield:Notify({Title = "Thermal Vision", Duration = 2})
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🔵 X-Ray Vision",
+    Callback = function()
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                obj.LocalTransparencyModifier = 0.7
+            end
+        end
+        Rayfield:Notify({Title = "X-Ray Vision", Duration = 2})
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🟢 Normal Vision",
+    Callback = function()
+        Lighting.Ambient = Color3.fromRGB(70, 70, 70)
+        Lighting.OutdoorAmbient = Color3.fromRGB(70, 70, 70)
+        Lighting.Brightness = 1
+        Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                obj.LocalTransparencyModifier = 0
+            end
+        end
+        Rayfield:Notify({Title = "Normal Vision", Duration = 2})
+    end
+})
+
+ESPTab:CreateSection("Lighting Presets")
+
+ESPTab:CreateButton({
+    Name = "☀️ Max Brightness",
+    Callback = function()
+        Lighting.Brightness = 10
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🌙 Min Brightness",
+    Callback = function()
+        Lighting.Brightness = 0
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🌈 Color Shift Red",
+    Callback = function()
+        Lighting.ColorShift_Top = Color3.fromRGB(255, 0, 0)
+        Lighting.ColorShift_Bottom = Color3.fromRGB(255, 0, 0)
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🌈 Color Shift Blue",
+    Callback = function()
+        Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 255)
+        Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 255)
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🌈 Color Shift Green",
+    Callback = function()
+        Lighting.ColorShift_Top = Color3.fromRGB(0, 255, 0)
+        Lighting.ColorShift_Bottom = Color3.fromRGB(0, 255, 0)
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🌈 Color Shift Purple",
+    Callback = function()
+        Lighting.ColorShift_Top = Color3.fromRGB(150, 0, 255)
+        Lighting.ColorShift_Bottom = Color3.fromRGB(150, 0, 255)
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "🌈 Reset Colors",
+    Callback = function()
+        Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
+        Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
+    end
+})
+
+ESPTab:CreateSection("FOV Presets")
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 70 (Normal)",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 70
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 90",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 90
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 100",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 100
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 110",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 110
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 120 (Max)",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 120
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 50 (Zoom)",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 50
+    end
+})
+
+ESPTab:CreateButton({
+    Name = "👁️ FOV 30 (Super Zoom)",
+    Callback = function()
+        workspace.CurrentCamera.FieldOfView = 30
+    end
+})
+
+-- ============================================
+-- ADMIN TAB - MASSIVE EXPANSION
+-- ============================================
+AdminTab:CreateSection("Quick Commands")
+
+AdminTab:CreateButton({
+    Name = "🏠 Teleport All to Me",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                    plr.Character.HumanoidRootPart.CFrame = root.CFrame
+                end
+            end
+            Rayfield:Notify({Title = "All Teleported", Duration = 2})
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🎯 Teleport to Random Player",
+    Callback = function()
+        local players = Players:GetPlayers()
+        local randomPlayer = players[math.random(1, #players)]
+        if randomPlayer and randomPlayer.Character then
+            local root = getRoot()
+            if root then
+                root.CFrame = randomPlayer.Character.HumanoidRootPart.CFrame
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "💨 Push All Players",
+    Callback = function()
+        local root = getRoot()
+        if root then
+            for _, plr in pairs(Players:GetPlayers()) do
+                if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                    local direction = (plr.Character.HumanoidRootPart.Position - root.Position).Unit
+                    local bv = Instance.new("BodyVelocity")
+                    bv.Velocity = direction * 100
+                    bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+                    bv.Parent = plr.Character.HumanoidRootPart
+                    game:GetService("Debris"):AddItem(bv, 0.5)
+                end
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🌀 Spin All Players",
+    Callback = function()
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                spawn(function()
+                    for i = 1, 36 do
+                        plr.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(10), 0)
+                        wait(0.05)
+                    end
+                end)
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "⬆️ Launch All Players",
+    Callback = function()
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                plr.Character.HumanoidRootPart.Velocity = Vector3.new(0, 200, 0)
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🎭 Clone Me",
+    Callback = function()
+        local char = getChar()
+        if char then
+            local clone = char:Clone()
+            clone.Parent = workspace
+            clone:MoveTo(char.HumanoidRootPart.Position + Vector3.new(5, 0, 0))
+            Rayfield:Notify({Title = "Clone Created", Duration = 2})
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🗑️ Delete All Clones",
+    Callback = function()
+        for _, obj in pairs(workspace:GetChildren()) do
+            if obj.Name == player.Name and obj ~= getChar() then
+                obj:Destroy()
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "💥 Explode All",
+    Callback = function()
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                local exp = Instance.new("Explosion")
+                exp.Position = plr.Character.HumanoidRootPart.Position
+                exp.Parent = workspace
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🌟 Sparkle All",
+    Callback = function()
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                local sparkles = Instance.new("Sparkles")
+                sparkles.Parent = plr.Character.HumanoidRootPart
+            end
+        end
+    end
+})
+
+AdminTab:CreateButton({
+    Name = "🔥 Fire All",
+    Callback = function()
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                local fire = Instance.new("Fire")
+                fire.Parent = plr.Character.HumanoidRootPart
+            end
+        end
+    end
+})

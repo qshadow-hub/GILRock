@@ -13,7 +13,7 @@ local Window = Rayfield:CreateWindow({
    DisableBuildWarnings = false,
    ConfigurationSaving = {Enabled = true, FolderName = "UniversalScriptConfig", FileName = "Big Hub"},
    Discord = {Enabled = false, Invite = "noinvitelink", RememberJoins = true},
-   KeySystem = true,
+   KeySystem = false,
    KeySettings = {
       Title = "Universal Script",
       Subtitle = "Key System",

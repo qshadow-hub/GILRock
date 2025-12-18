@@ -1282,7 +1282,7 @@ ScriptsTab:CreateButton({
 ScriptsTab:CreateButton({
     Name = "🎯 Aimbot Script",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Aimbot-V3/main/main.lua"))()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/606b846e88998801018fae498b9b8a3c.lua"))(
         Rayfield:Notify({Title = "Script Loaded", Content = "Aimbot loaded", Duration = 2})
     end
 })

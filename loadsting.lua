@@ -2966,6 +2966,28 @@ AutoFarmTab:CreateSlider({
 })
 
 -- Then update the Auto Click toggle to use it:
+-- Add this variable at the top with other control variables (around line 80)
+local clickSpeed = 0.1
+
+-- Universal click function (add this before Auto Farm tab if not already added)
+local function universalClick()
+    pcall(function()
+        if mouse1click then
+            mouse1click()
+        elseif mouse1press and mouse1release then
+            mouse1press()
+            task.wait(0.01)
+            mouse1release()
+        else
+            local VIM = game:GetService("VirtualInputManager")
+            VIM:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+            task.wait(0.01)
+            VIM:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+        end
+    end)
+end
+
+-- Then replace your Auto Click toggle with this:
 AutoFarmTab:CreateToggle({
     Name = "🖱️ Auto Click",
     CurrentValue = false,
@@ -2975,15 +2997,27 @@ AutoFarmTab:CreateToggle({
             spawn(function()
                 while autoClickEnabled do
                     pcall(function()
-                        mouse1click()
+                        universalClick()  -- Use universal function instead
                     end)
-                    wait(clickSpeed)  -- Use the variable here
+                    wait(clickSpeed)
                 end
             end)
             Rayfield:Notify({Title = "Auto Click ON", Content = "Clicking automatically!", Duration = 2})
         else
             Rayfield:Notify({Title = "Auto Click OFF", Content = "Stopped clicking", Duration = 2})
         end
+    end
+})
+
+-- Make the Click Speed slider actually work:
+AutoFarmTab:CreateSlider({
+    Name = "⚡ Click Speed (CPS)",
+    Range = {1, 100},
+    Increment = 1,
+    CurrentValue = 10,
+    Callback = function(val)
+        clickSpeed = 1 / val  -- Convert CPS to delay between clicks
+        Rayfield:Notify({Title = "Click Speed", Content = val.." CPS", Duration = 1})
     end
 })
 
@@ -3014,7 +3048,7 @@ AutoFarmTab:CreateToggle({
                             
                             if nearestEnemy and nearestEnemy:FindFirstChild("HumanoidRootPart") then
                                 root.CFrame = CFrame.new(nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 5, 0))
-                                mouse1click()
+                                universalClick()  -- Changed here
                             end
                         end
                     end)

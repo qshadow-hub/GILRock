@@ -328,8 +328,8 @@ local function stopESP()
     espCache = {}
 end
 
--- FULLBRIGHT
- local Light = game:GetService("Lighting")
+--- FULLBRIGHT
+local Light = game:GetService("Lighting")
 function dofullbright()
 Light.Ambient = Color3.new(1, 1, 1)
 Light.ColorShift_Bottom = Color3.new(1, 1, 1)
@@ -337,7 +337,6 @@ Light.ColorShift_Top = Color3.new(1, 1, 1)
 end
 dofullbright()
 Light.LightingChanged:Connect(dofullbright)
--- TRACERS (Following Mouse Cursor)
 
 local function createTracerForPlayer(plr)
     if plr == player then return end
@@ -1041,10 +1040,16 @@ ESPTab:CreateToggle({
     Callback = function(val)
         pcall(function()
             if val then
-                enableFullbright()
+                Lighting.Ambient = Color3.new(1, 1, 1)
+                Lighting.ColorShift_Bottom = Color3.new(1, 1, 1)
+                Lighting.ColorShift_Top = Color3.new(1, 1, 1)
+                Lighting.Brightness = 2
                 Rayfield:Notify({Title = "Fullbright ON", Content = "Maximum brightness", Duration = 2})
             else
-                disableFullbright()
+                Lighting.Ambient = Color3.fromRGB(70, 70, 70)
+                Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
+                Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
+                Lighting.Brightness = 1
                 Rayfield:Notify({Title = "Fullbright OFF", Content = "Normal lighting", Duration = 2})
             end
         end)
@@ -1342,45 +1347,6 @@ ScriptsTab:CreateButton({
     end
 })
 
-ScriptsTab:CreateButton({
-    Name = "🔨 The Forge",
-    Callback = function()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
-        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
-    end
-})
-
-ScriptsTab:CreateButton({
-    Name = "🔨 The Forge",
-    Callback = function()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
-        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
-    end
-})
-
-ScriptsTab:CreateButton({
-    Name = "🔨 The Forge",
-    Callback = function()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
-        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
-    end
-})
-
-ScriptsTab:CreateButton({
-    Name = "🔨 The Forge",
-    Callback = function()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
-        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
-    end
-})
-
-ScriptsTab:CreateButton({
-    Name = "🔨 The Forge",
-    Callback = function()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/2075c39b9a5a2e4414c59c93fe8a5f06.lua"))()
-        Rayfield:Notify({Title = "Script Loaded", Content = "Counter Blox script loaded", Duration = 2})
-    end
-})
 -- ============================================
 -- TAB 6: ADMIN
 -- ============================================
@@ -1933,25 +1899,30 @@ MiscTab:CreateToggle({
     end
 })
 
-MiscTab:CreateButton({
+local rainbowCharacter = false
+
+CharacterTab:CreateToggle({
     Name = "🎨 Rainbow Character",
-    Callback = function()
-        pcall(function()
-            local char = getChar()
-            if char then
-                spawn(function()
-                    while char and char.Parent do
-                        for _, part in pairs(char:GetDescendants()) do
-                            if part:IsA("BasePart") then
-                                part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+    CurrentValue = false,
+    Callback = function(val)
+        rainbowCharacter = val
+        if val then
+            spawn(function()
+                while rainbowCharacter do
+                    pcall(function()
+                        local char = getChar()
+                        if char then
+                            for _, part in pairs(char:GetDescendants()) do
+                                if part:IsA("BasePart") then
+                                    part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                                end
                             end
                         end
-                        wait(0.1)
-                    end
-                end)
-                Rayfield:Notify({Title = "Rainbow Character", Content = "Your character is now rainbow!", Duration = 2})
-            end
-        end)
+                    end)
+                    wait(0.1)
+                end
+            end)
+        end
     end
 })
 
@@ -2982,13 +2953,37 @@ AutoFarmTab:CreateToggle({
     end
 })
 
+local clickSpeed = 0.1
+
 AutoFarmTab:CreateSlider({
     Name = "⚡ Click Speed (CPS)",
     Range = {1, 100},
     Increment = 1,
     CurrentValue = 10,
     Callback = function(val)
-        -- This adjusts click speed in auto click
+        clickSpeed = 1 / val  -- Convert CPS to delay
+    end
+})
+
+-- Then update the Auto Click toggle to use it:
+AutoFarmTab:CreateToggle({
+    Name = "🖱️ Auto Click",
+    CurrentValue = false,
+    Callback = function(val)
+        autoClickEnabled = val
+        if val then
+            spawn(function()
+                while autoClickEnabled do
+                    pcall(function()
+                        mouse1click()
+                    end)
+                    wait(clickSpeed)  -- Use the variable here
+                end
+            end)
+            Rayfield:Notify({Title = "Auto Click ON", Content = "Clicking automatically!", Duration = 2})
+        else
+            Rayfield:Notify({Title = "Auto Click OFF", Content = "Stopped clicking", Duration = 2})
+        end
     end
 })
 
@@ -4066,13 +4061,16 @@ HomeTab:CreateToggle({
     end
 })
 
+local tornadoSpinning = false
+
 HomeTab:CreateToggle({
     Name = "🌪️ Tornado Spin",
     CurrentValue = false,
     Callback = function(val)
+        tornadoSpinning = val
         if val then
             spawn(function()
-                while val do
+                while tornadoSpinning do  -- Now checks the global variable
                     local root = getRoot()
                     if root then
                         root.CFrame = root.CFrame * CFrame.Angles(0, math.rad(20), 0)
